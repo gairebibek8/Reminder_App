@@ -1,6 +1,6 @@
 import React from "react";
 
-function Reminder(props) {
+export default function Reminder(props) {
     return (
            <span> 
                 {/*  i. Display a reminder
@@ -13,6 +13,6 @@ function Reminder(props) {
 
             </span>
     );
-}
+};
 
-export default Reminder;
+

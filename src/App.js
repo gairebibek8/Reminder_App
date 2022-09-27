@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
-import "./components/Reminder";
-import "./components/Header";
+import Header from "./components/Header.js";
+import Reminder from "./components/Reminder.js";
 // import the Reminder component
 // import the Header component
 
@@ -44,8 +44,9 @@ function App() {
     }
     setReminder(initialReminder);
     
-  }
-  ;
+  };
+
+  
   /*
      Complete this method to mark the reminder with the "id" argument as completed. 
   */
