@@ -141,7 +141,7 @@ function App() {
 
 
           <button
-            className="my-botton"
+            className="my-button"
             onClick={() => deleteReminder(reminder.id)}
           >
             ❌
