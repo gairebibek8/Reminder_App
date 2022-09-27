@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
-import "./components/Reminder"
-import "./components/Header"
+import "./components/Reminder";
+import "./components/Header";
 // import the Reminder component
 // import the Header component
 
@@ -26,6 +26,12 @@ function App() {
           ii. ID should be generated randomly (You can use Math.floor(Math.random() * 1000))
   */
   function setNewReminder(e) {
+    setReminder({
+      title : e.target.value,
+      completed : false,
+      id : Math.floor(Math.random() * 1000)
+
+    });
     
   }
 
@@ -33,13 +39,30 @@ function App() {
     Complete this method to add a reminder to the reminders array
   */
   function addReminder() {
+    if (reminder.title) {
+      setReminders((oldReminders) => [...oldReminders, reminder]);
+    }
+    setReminder(initialReminder);
+    
   }
-  
+  ;
   /*
      Complete this method to mark the reminder with the "id" argument as completed. 
   */
   function completeReminder(id) {
-  }
+    const updatedReminders = reminders && reminders.map((myReminder) => {
+        if (myReminder.id === id) {
+          myReminder.completed = true;
+        }
+        return myReminder;
+      });
+
+    if (!updatedReminders) {
+      return;
+    }
+
+    setReminders(updatedReminders);
+  };
 
   /*
      Complete this method to retrieve the reminders to be displayed based on showCompletedReminders value
@@ -47,21 +70,41 @@ function App() {
           ii) you should return the retrieved reminders
   */
   function displayedReminders() {
-    return []; // You should delete this; it's just notifying that your method should return an array
-  }
+    let completedReminders = [];
+    let uncompletedReminders = [];
+
+    reminders && reminders.map((myReminder) => {
+        if (myReminder?.completed === true) {
+          completedReminders.push(myReminder);
+        } else if (myReminder?.completed === false) {
+          uncompletedReminders.push(myReminder);
+        }
+      });
+
+
+    if (showCompletedReminders) {
+      return completedReminders;
+    }
+    return uncompletedReminders;
+  };
 
 
   /*
     Complete this method to delete the reminder with the passed "id"
   */
   function deleteReminder(id) {
-  }
+    const remainingReminders = reminders.filter((myReminder) => {
+      return myReminder.id !== id;
+    });
+
+    setReminders(remainingReminders);
+  };
 
 
   // Main part of app
   return (
     <div className="app">
-      {/*  Add the Header component */}
+      <Header />
 
       <input
         type="text"
@@ -71,6 +114,8 @@ function App() {
       />
 
       {/* Add a button elementwith onClick that calls the addReminder() */}
+      <button onClick={() => addReminder()}>Add Reminder</button>
+
 
       <div>
         <p>Showing : {showCompletedReminders ? 'Completed': 'Outstanding'} reminders</p>
@@ -79,25 +124,28 @@ function App() {
 
       {displayedReminders().map((reminder) => (
         <div>
-           {/*  Add the Reminder component
-               Pass both the reminder object and showCompletedReminders variable as props to the component
-           */}
+          <Reminder
+            reminder={reminder}
+            showCompletedReminders={showCompletedReminders}
+          />
 
-          {/*   i. Add a complete button element that a user can use to indicate a reminder is completed.
-                    ii. Only show this button when the showCompletedReminders is false
-                    
-               Call the appropriate helper method already defined above on it's onClick event.
-                    ii. Use the my-button className for styling
-                    iii. Use  "Complete  ✅" as the button's content
-           */}
-          
-          {/*  i. Add a delete button element to delete a reminder
+          {!showCompletedReminders && (
+            <button
+              className="my-button"
+              onClick={() => completeReminder(reminder.id)}
+            >
+              Complete✅
+            </button>
+          )}
 
-               Call the appropriate helper method already defined above on it's onClick event.
-                    ii. Use the my-button className for styling
-                    iii. Use "❌" as the button's content
-           */}
-        </div>
+
+          <button
+            className="my-botton"
+            onClick={() => deleteReminder(reminder.id)}
+          >
+            ❌
+          </button>
+      </div>
       ) )}
     </div>
   );
